@@ -1,33 +1,23 @@
-import { signIn } from "@/store/slices/authSlice";
-import { AppDispatch } from "@/store/store";
+import { useSignIn } from "@/components/shared/hooks/useAuth";
+import { BaseFormErrors, BaseFormState } from "@/types/FormTypes";
 import { FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-
-interface LoginFormState {
-  email: string;
-  password: string;
-}
-
-interface LoginFormErrors {
-  email: string;
-  password: string;
-}
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [loginFormState, setLoginFormState] = useState<LoginFormState>({
+  const [loginFormState, setLoginFormState] = useState<BaseFormState>({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<Partial<LoginFormErrors>>({});
+  const [errors, setErrors] = useState<Partial<BaseFormErrors>>({});
+  const { mutate: signIn } = useSignIn();
+  const navigate = useNavigate();
 
-  const handleChange = (prop: keyof LoginFormState, value: string) => {
+  const handleChange = (prop: keyof BaseFormState, value: string) => {
     setLoginFormState({ ...loginFormState, [prop]: value });
   };
 
   const validateForm = () => {
-    const newErrors: Partial<LoginFormErrors> = {};
+    const newErrors: Partial<BaseFormErrors> = {};
     if (!loginFormState.email) {
       newErrors.email = "이메일을 입력하세요.";
     }
@@ -45,8 +35,9 @@ const LoginForm = () => {
     }
     try {
       const { email, password } = loginFormState;
-      dispatch(signIn({ email, password }));
+      signIn({ email, password });
       console.log("로그인 되었습니다.");
+      navigate("/");
     } catch (error) {
       console.error(`로그인 도중 에러 발생: ${(error as Error).message}`);
     }

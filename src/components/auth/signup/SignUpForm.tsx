@@ -1,29 +1,17 @@
-import { signUp } from "@/store/slices/authSlice";
-import { AppDispatch } from "@/store/store";
+import { useSignUp } from "@/components/shared/hooks/useAuth";
+import { SignUpFormErrors, SignUpFormState } from "@/types/FormTypes";
 import { FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-
-interface SignUpFormState {
-  email: string;
-  password: string;
-  nickname: string;
-}
-
-interface SignUpFormErrors {
-  email: string;
-  password: string;
-  nickname: string;
-}
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const [signUpFormState, setSignUpFormState] = useState<SignUpFormState>({
     email: "",
     password: "",
     nickname: "",
   });
   const [errors, setErrors] = useState<Partial<SignUpFormErrors>>({});
+  const navigate = useNavigate();
+  const { mutate: signUp } = useSignUp();
 
   const handleChange = (prop: keyof SignUpFormState, value: string) => {
     setSignUpFormState({ ...signUpFormState, [prop]: value });
@@ -37,6 +25,9 @@ const SignUpForm = () => {
     if (!signUpFormState.password) {
       newErrors.password = "비밀번호를 입력하세요.";
     }
+    if (!signUpFormState.nickname) {
+      newErrors.nickname = "닉네임을 입력하세요.";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -47,8 +38,9 @@ const SignUpForm = () => {
     }
     try {
       const { email, password, nickname } = signUpFormState;
-      dispatch(signUp({ email, password, nickname }));
+      signUp({ email, password, nickname });
       console.log("회원가입 성공");
+      navigate("/login");
     } catch (error) {
       console.error(`회원가입 도중 에러 발생 ${(error as Error).message}`);
     }
