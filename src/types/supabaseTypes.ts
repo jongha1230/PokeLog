@@ -1,9 +1,15 @@
+import { Session, User } from "@supabase/supabase-js";
 import { Database } from "./supabase";
 
 // Users
-export type UserRow = Database["public"]["Tables"]["users"]["Row"];
+export type UserProfile = Database["public"]["Tables"]["users"]["Row"];
 export type UserInsert = Database["public"]["Tables"]["users"]["Insert"];
 export type UserUpdate = Database["public"]["Tables"]["users"]["Update"];
+
+export type SignUpResponse = {
+  user: User | null;
+  session: Session | null;
+};
 
 // Bookmarks
 export type BookmarkRow = Database["public"]["Tables"]["bookmarks"]["Row"];

@@ -4,10 +4,10 @@ import { AuthPage } from "../pages";
 
 const router = createBrowserRouter([
   {
-    path: "/auth",
+    path: "/",
     element: <AuthPage />,
     children: [
-      { path: "login", element: <LoginForm /> },
+      { path: "", element: <LoginForm /> },
       { path: "signup", element: <SignUpForm /> },
     ],
   },
