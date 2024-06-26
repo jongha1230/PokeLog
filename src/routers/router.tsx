@@ -1,10 +1,17 @@
+import MainPage from "@/pages/MainPage/MainPage";
+import MainLayout from "@/styles/MainLayout";
 import { createBrowserRouter } from "react-router-dom";
 import { LoginForm, SignUpForm } from "../components";
 import { AuthPage } from "../pages";
 
 const router = createBrowserRouter([
   {
-    path: "/auth",
+    path: "/",
+    element: <MainLayout />,
+    children: [{ path: "/", element: <MainPage /> }],
+  },
+  {
+    path: "/",
     element: <AuthPage />,
     children: [
       { path: "login", element: <LoginForm /> },

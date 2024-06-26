@@ -1,9 +1,18 @@
-import "./App.css";
+import { useEffect } from "react";
+import { RouterProvider } from "react-router-dom";
+import router from "./routers/router";
+import { useAuthStore } from "./store/authStore";
 
 function App() {
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   return (
     <>
-      <p>초기 파일 설정</p>
+      <RouterProvider router={router} />
     </>
   );
 }
