@@ -1,10 +1,9 @@
-import { MovieCard } from "@/components/movie";
 import { usePopularMovies } from "@/components/shared/hooks/useMovies";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { Link } from "react-router-dom";
+import MovieCard from "../MovieCard";
 
-function MainPage() {
+function MovieList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     usePopularMovies();
 
@@ -22,20 +21,13 @@ function MainPage() {
   if (status === "error") return <div>오류 발생!</div>;
 
   return (
-    <div className="bg-slate-800">
+    <div>
       <div>
         {data?.pages.map((page, i) => (
-          <div className="container mx-auto px-4 " key={i}>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
+          <div key={i}>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8 bg-white">
               {page.results.map((movie) => (
-                <li
-                  key={movie.id}
-                  className="border shadow-md p-4 m-4 rounded-3xl bg-white/90"
-                >
-                  <Link to={`movie/${movie.id}`}>
-                    <MovieCard movie={movie} />
-                  </Link>
-                </li>
+                <MovieCard key={movie.id} movie={movie} />
               ))}
             </ul>
           </div>
@@ -52,4 +44,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default MovieList;

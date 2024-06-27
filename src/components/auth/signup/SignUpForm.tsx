@@ -40,14 +40,14 @@ const SignUpForm = () => {
       const { email, password, nickname } = signUpFormState;
       signUp({ email, password, nickname });
       console.log("회원가입 성공");
-      navigate("/login");
+      navigate("/auth/login");
     } catch (error) {
       console.error(`회원가입 도중 에러 발생 ${(error as Error).message}`);
     }
   };
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-      <h2 className="text-2xl font-bold mb-4 text-center">로그인</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">회원가입</h2>
       <form onSubmit={handleSignUp}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -100,7 +100,7 @@ const SignUpForm = () => {
           </button>
 
           <Link
-            to={"/"}
+            to={"/auth/login"}
             className="bg-green-500 hover:bg-green-700 text-white font-bold text-center py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
           >
             로그인

@@ -42,10 +42,10 @@ function Header({ user, onClick }: PropsWithChildren<HeaderProps>) {
             ) : (
               <>
                 <li className="text-ellipsis">
-                  <Link to="/login">로그인</Link>
+                  <Link to="/auth/login">로그인</Link>
                 </li>
                 <li className="text-ellipsis">
-                  <Link to="/signup">회원가입</Link>
+                  <Link to="/auth/signup">회원가입</Link>
                 </li>
               </>
             )}

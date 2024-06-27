@@ -1,6 +1,10 @@
 import api from "@/api";
 import { MovieResponse } from "@/types/MovieType";
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 
 export const usePopularMovies = () => {
   return useInfiniteQuery<
@@ -17,5 +21,16 @@ export const usePopularMovies = () => {
       if (lastPage.page < lastPage.total_pages) return lastPage.page + 1;
       return undefined;
     },
+  });
+};
+
+export const useGetMovieDetails = (movieId: number) => {
+  return useQuery({
+    queryKey: ["Movie", movieId],
+    queryFn: async () => {
+      const data = await api.movie.fetchMovieDetails(movieId);
+      return data;
+    },
+    enabled: !!movieId,
   });
 };

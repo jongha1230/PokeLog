@@ -9,7 +9,9 @@ function MainLayout() {
     <div className="w-screen h-screen bg-slate-800">
       {/* 헤더 */}
       <Header user={user} onClick={signOut} />
-      <Outlet />
+      <main className="bg-slate-800">
+        <Outlet />
+      </main>
     </div>
   );
   // return <Link to={"/login"}>로그인</Link>;

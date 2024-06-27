@@ -2,7 +2,6 @@ import { PostgrestError, User } from "@supabase/supabase-js";
 
 import { SignUpResponse, UserProfile } from "@/types/supabaseTypes";
 import supabase from "./supabaseAPI";
-
 class AuthAPI {
   //회원가입
   async signUp(
