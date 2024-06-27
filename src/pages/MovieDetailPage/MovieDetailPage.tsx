@@ -1,14 +1,43 @@
+import { StarRating } from "@/components/common";
 import { useGetMovieDetails } from "@/components/shared/hooks/useMovies";
+import {
+  useCreateReview,
+  useGetReviews,
+} from "@/components/shared/hooks/useReview";
+import { useAuthStore } from "@/store/authStore";
 import { Genre } from "@/types/MovieType";
+import { ReviewInsert } from "@/types/supabaseTypes";
 import { useState } from "react";
 import { useParams } from "react-router";
 
 function MovieDetailPage() {
   const { movieId } = useParams<{ movieId: string }>();
   const { data: movieData, status } = useGetMovieDetails(Number(movieId));
+  const { data: reviews, isLoading: reviewsLoading } = useGetReviews(
+    movieId || ""
+  );
+  const { mutate: createReview, isPending: reviewLoading } = useCreateReview();
   const [activeTab, setActiveTab] = useState("details");
+  const [newReview, setNewReview] = useState("");
+  const [rating, setRating] = useState(0);
+  const user = useAuthStore((state) => state.user);
 
-  console.log(movieData);
+  const handleReviewSubmit = () => {
+    if (!user?.id || !movieId) {
+      return;
+    }
+
+    const review: ReviewInsert = {
+      user_id: user.id,
+      movie_id: movieId,
+      review: newReview,
+      rating: rating,
+    };
+    createReview(review);
+    setNewReview("");
+    setRating(0);
+  };
+
   if (status === "pending") return <div>로딩중...</div>;
   if (status === "error") return <div>오류 발생!</div>;
 
@@ -53,12 +82,22 @@ function MovieDetailPage() {
                     영화 상세 정보
                   </li>
                   <li
-                    className={`cursor-pointer p-4 ${
+                    className={`cursor-pointer p-4 transition-colors duration-300 ${
                       activeTab === "reviews"
                         ? "border-b-2 border-red-700 text-red-700"
                         : "text-gray-400"
                     }`}
                     onClick={() => setActiveTab("reviews")}
+                  >
+                    리뷰 목록
+                  </li>
+                  <li
+                    className={`cursor-pointer p-4 transition-colors duration-300 ${
+                      activeTab === "writeReview"
+                        ? "border-b-2 border-red-700 text-red-700"
+                        : "text-gray-400"
+                    }`}
+                    onClick={() => setActiveTab("writeReview")}
                   >
                     리뷰 작성
                   </li>
@@ -76,16 +115,61 @@ function MovieDetailPage() {
                     </div>
                   )}
                   {activeTab === "reviews" && (
+                    <div className="mt-4 max-h-[400px] overflow-y-auto">
+                      <h2 className="text-2xl font-bold">리뷰 목록</h2>
+                      {reviewsLoading ? (
+                        <p>리뷰 로딩 중...</p>
+                      ) : (
+                        <ul>
+                          {reviews?.map((review) => (
+                            <li key={review.id} className="mt-2">
+                              <div className="p-2 bg-gray-800 rounded flex justify-between items-center">
+                                <div>
+                                  <p className="font-bold">
+                                    {review.user.nickname}
+                                  </p>
+                                  <p>{review.review}</p>
+                                  {review.rating && (
+                                    <p className="text-yellow-500">
+                                      {Array.from(
+                                        { length: review.rating },
+                                        (_, i) => (
+                                          <span key={i}>&#9733;</span>
+                                        )
+                                      )}
+                                    </p>
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-400">
+                                  {review.created_at &&
+                                    new Date(
+                                      review.created_at
+                                    ).toLocaleString()}
+                                </p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )}
+                  {activeTab === "writeReview" && (
                     <div className="mt-4">
                       <h2 className="text-2xl font-bold">댓글(리뷰) 작성</h2>
-                      {/* 댓글 작성 폼 구현 */}
+                      <StarRating rating={rating} setRating={setRating} />
                       <textarea
                         className="w-full p-2 mt-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-700"
                         rows={5}
                         placeholder="댓글을 작성하세요..."
+                        value={newReview}
+                        onChange={(e) => setNewReview(e.target.value)}
                       ></textarea>
-                      <button className="mt-2 px-4 py-2 bg-red-700 rounded text-white">
-                        작성
+                      <button
+                        className="mt-2 px-4 py-2 bg-red-700 rounded text-white transition duration-300 hover:bg-red-600 hover:text-gray-200"
+                        onClick={handleReviewSubmit}
+                        disabled={reviewLoading}
+                      >
+                        {reviewLoading ? "작성 중..." : "작성"}
                       </button>
                     </div>
                   )}
