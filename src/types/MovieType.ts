@@ -1,3 +1,5 @@
+import { InfiniteData } from "@tanstack/react-query";
+
 export type Movie = {
   id: number;
   title: string;
@@ -20,12 +22,34 @@ export type Genre = {
   name: string;
 };
 
-export type MovieResponse<IsDetail extends boolean = true> = {
+export type MovieResponse = {
   results: Movie[];
-} & (IsDetail extends false
-  ? {
-      page: number;
-      total_pages: number;
-      total_results: number;
-    }
-  : Record<string, never>);
+  page: number;
+  total_pages: number;
+  total_results: number;
+};
+
+export type MovieDetailResponse = {
+  results: Movie[];
+};
+
+type BaseProps = {
+  data: InfiniteData<MovieResponse> | Movie[] | undefined;
+  status: "pending" | "error" | "success";
+};
+
+type InfiniteProps = {
+  isInfinite: true;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+};
+
+type NonInfiniteProps = {
+  isInfinite?: false;
+  fetchNextPage?: never;
+  hasNextPage?: never;
+  isFetchingNextPage?: never;
+};
+
+export type MovieListProps = BaseProps & (InfiniteProps | NonInfiniteProps);

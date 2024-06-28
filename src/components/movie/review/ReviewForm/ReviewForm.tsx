@@ -3,7 +3,6 @@ import {
   useCreateReview,
   useUpdateReview,
 } from "@/components/shared/hooks/useReview";
-import { useAuthStore } from "@/store/authStore";
 import { ReviewInsert, ReviewUpdate } from "@/types/supabaseTypes";
 import { useState } from "react";
 
@@ -12,6 +11,12 @@ interface ReviewFormProps {
   editingReview?: ReviewUpdate | null;
   onSave: () => void;
   onCancelEdit: () => void;
+  user: {
+    email: string;
+    id: string;
+    nickname: string;
+    profile_picture: string | null;
+  } | null;
 }
 
 const ReviewForm = ({
@@ -19,8 +24,8 @@ const ReviewForm = ({
   editingReview,
   onSave,
   onCancelEdit,
+  user,
 }: ReviewFormProps) => {
-  const user = useAuthStore((state) => state.user);
   const [reviewText, setReviewText] = useState(
     editingReview ? editingReview.review : ""
   );

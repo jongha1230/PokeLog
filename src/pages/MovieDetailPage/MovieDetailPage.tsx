@@ -1,19 +1,38 @@
 import { ReviewForm, ReviewList } from "@/components/movie/review";
+import {
+  useCreateBookmark,
+  useDeleteBookmark,
+  useGetBookmarks,
+} from "@/components/shared/hooks/useBookmark";
 import { useGetMovieDetails } from "@/components/shared/hooks/useMovies";
+import { useAuthStore } from "@/store/authStore";
 import { Genre } from "@/types/MovieType";
 import { ReviewUpdate } from "@/types/supabaseTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 function MovieDetailPage() {
   const { movieId } = useParams<{ movieId: string }>();
   const { data: movieData, status } = useGetMovieDetails(Number(movieId));
+  const user = useAuthStore((state) => state.user);
+  const { mutate: createBookmark } = useCreateBookmark();
+  const { mutate: deleteBookmark } = useDeleteBookmark();
+  const { data: bookmarks } = useGetBookmarks(user?.id || "");
   const [activeTab, setActiveTab] = useState("details");
   const [editingReview, setEditingReview] = useState<ReviewUpdate | null>(null);
+  const [isBookmark, setIsBookmark] = useState(false);
+
+  useEffect(() => {
+    if (bookmarks && movieId) {
+      const found = bookmarks.some(
+        (bookmark) => bookmark.movie_id === movieId.toString()
+      );
+      setIsBookmark(found);
+    }
+  }, [bookmarks, movieId]);
 
   const handleSave = () => {
     setActiveTab("reviews");
-
     setEditingReview(null);
   };
 
@@ -24,6 +43,25 @@ function MovieDetailPage() {
   const handleEditReview = (review: ReviewUpdate) => {
     setEditingReview(review);
     setActiveTab("writeReview");
+  };
+
+  const handleToggleBookmark = () => {
+    if (user?.id && movieData) {
+      if (isBookmark) {
+        const bookmark = bookmarks?.find(
+          (bookmark) => bookmark.movie_id === movieId
+        );
+        if (bookmark) deleteBookmark(bookmark.id);
+      } else {
+        createBookmark({
+          user_id: user.id,
+          movie_id: movieData.id.toString(),
+          movie_title: movieData.title,
+          movie_genre: movieData.genres?.map((g) => g.name).join(", "),
+        });
+      }
+      setIsBookmark(!isBookmark);
+    }
   };
 
   if (status === "pending") return <div>로딩중...</div>;
@@ -92,8 +130,11 @@ function MovieDetailPage() {
                     리뷰 작성
                   </li>
                   <li className="ml-auto">
-                    <button className="px-4 py-2 bg-red-700 rounded text-white transition duration-300 hover:bg-red-600 hover:text-gray-200">
-                      찜하기
+                    <button
+                      className="px-4 py-2 bg-red-700 rounded text-white transition duration-300 hover:bg-red-600 hover:text-gray-200"
+                      onClick={handleToggleBookmark}
+                    >
+                      {isBookmark ? "북마크 해제" : "북마크"}
                     </button>
                   </li>
                 </ul>
@@ -111,6 +152,7 @@ function MovieDetailPage() {
                   )}
                   {activeTab === "writeReview" && (
                     <ReviewForm
+                      user={user}
                       movieId={movieId || ""}
                       editingReview={editingReview}
                       onSave={handleSave}

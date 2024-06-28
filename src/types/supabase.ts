@@ -18,11 +18,10 @@ export type Database = {
           user_id: string | null;
         };
         Insert: {
-          id?: number;
           movie_genre?: string | null;
           movie_id: string;
           movie_title: string;
-          user_id?: string | null;
+          user_id: string;
         };
         Update: {
           id?: number;
