@@ -23,6 +23,13 @@ class MovieAPI {
     });
     return response.data;
   };
+  // 상영 예정 영화
+  fetchUpcomingMovies = async (page: number = 1): Promise<MovieResponse> => {
+    const response = await this.axios.get("/movie/upcoming", {
+      params: { api_key: this.API_KEY, page, language: "ko-KR" },
+    });
+    return response.data;
+  };
   // 영화 항목
   fetchMovieDetails = async (movieId: number): Promise<Movie> => {
     const response = await this.axios.get(`/movie/${movieId}`, {

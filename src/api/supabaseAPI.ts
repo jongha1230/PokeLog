@@ -5,7 +5,7 @@ const SUPABASE_PROJECT_URL: string = import.meta.env
   .VITE_SUPABASE_URL as string;
 const SUPABASE_ANON_KEY: string = import.meta.env.VITE_SUPABASE_KEY as string;
 
-const supabase: SupabaseClient<Database, "public"> = createClient(
+const supabase: SupabaseClient<Database> = createClient(
   SUPABASE_PROJECT_URL,
   SUPABASE_ANON_KEY
 );

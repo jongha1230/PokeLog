@@ -43,29 +43,32 @@ export type Database = {
       };
       reviews: {
         Row: {
-          user: any;
+          user: {
+            nickname: string;
+            profile_picture: string | null;
+          };
           created_at: string | null;
           id: number;
           movie_id: string;
-          rating: number | null;
-          review: string | null;
-          user_id: string | null;
+          rating: number;
+          review: string;
+          user_id: string;
         };
         Insert: {
           created_at?: string | null;
           id?: number;
           movie_id: string;
-          rating?: number | null;
-          review?: string | null;
-          user_id?: string | null;
+          rating: number;
+          review: string;
+          user_id: string;
         };
         Update: {
           created_at?: string | null;
-          id?: number;
-          movie_id?: string;
-          rating?: number | null;
-          review?: string | null;
-          user_id?: string | null;
+          id: number;
+          movie_id: string;
+          rating: number;
+          review: string;
+          user_id: string;
         };
         Relationships: [
           {

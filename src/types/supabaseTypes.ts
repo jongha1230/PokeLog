@@ -22,3 +22,9 @@ export type BookmarkUpdate =
 export type ReviewRow = Database["public"]["Tables"]["reviews"]["Row"];
 export type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
 export type ReviewUpdate = Database["public"]["Tables"]["reviews"]["Update"];
+export type ReviewWithUser = Database["public"]["Tables"]["reviews"]["Row"] & {
+  user: {
+    nickname: string;
+    profile_picture: string | null;
+  };
+};

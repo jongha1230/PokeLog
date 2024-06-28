@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { StarButton } from "./StarButton";
 
 const StarRating = ({
   rating,
@@ -14,20 +15,14 @@ const StarRating = ({
       {[...Array(5)].map((_, index) => {
         const ratingValue = index + 1;
         return (
-          <button
+          <StarButton
             key={ratingValue}
-            type="button"
-            className={`text-2xl ${
-              ratingValue <= (hover || rating)
-                ? "text-yellow-500"
-                : "text-gray-400"
-            }`}
-            onClick={() => setRating(ratingValue)}
-            onMouseEnter={() => setHover(ratingValue)}
-            onMouseLeave={() => setHover(0)}
-          >
-            &#9733;
-          </button>
+            ratingValue={ratingValue}
+            hover={hover}
+            rating={rating}
+            setRating={setRating}
+            setHover={setHover}
+          />
         );
       })}
     </div>

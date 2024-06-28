@@ -6,7 +6,7 @@ function MainLayout() {
   const { user, signOut } = useAuthStore();
 
   return (
-    <div className="w-screen h-screen bg-slate-800">
+    <div className="main-layout bg-gray-900  min-h-screen">
       {/* 헤더 */}
       <Header user={user} onClick={signOut} />
       <main className="bg-slate-800">
