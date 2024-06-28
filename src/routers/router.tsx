@@ -1,3 +1,4 @@
+import { MovieDetailPage } from "@/pages";
 import MainPage from "@/pages/MainPage/MainPage";
 import MainLayout from "@/styles/MainLayout";
 import { createBrowserRouter } from "react-router-dom";
@@ -8,10 +9,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    children: [{ path: "/", element: <MainPage /> }],
+    children: [
+      { path: "/", element: <MainPage /> },
+      { path: "/movie/:movieId", element: <MovieDetailPage /> },
+    ],
   },
   {
-    path: "/",
+    path: "/auth",
     element: <AuthPage />,
     children: [
       { path: "login", element: <LoginForm /> },

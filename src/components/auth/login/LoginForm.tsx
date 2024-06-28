@@ -83,10 +83,16 @@ const LoginForm = () => {
             </button>
 
             <Link
-              to={"/signup"}
+              to={"/auth/signup"}
               className="bg-green-500 hover:bg-green-700 text-white font-bold text-center py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             >
               회원가입
+            </Link>
+            <Link
+              to="/"
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold text-center py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            >
+              홈으로 돌아가기
             </Link>
           </div>
         </div>

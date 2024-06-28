@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 전체 스크롤바 스타일 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* 스크롤바 트랙 */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #191c20;
+}
+
+/* 스크롤바 핸들 */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563cb;
+  border-radius: 6px;
+  border: 5px solid #324868;
+}
+
+/* 스크롤바 핸들 호버시 */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
