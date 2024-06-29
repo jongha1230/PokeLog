@@ -9,7 +9,7 @@ function MainLayout() {
     <div className="main-layout bg-gray-900  min-h-screen">
       {/* 헤더 */}
       <Header user={user} onClick={signOut} />
-      <main className="bg-slate-800">
+      <main className="bg-slate-800 min-h-screen">
         <Outlet />
       </main>
     </div>

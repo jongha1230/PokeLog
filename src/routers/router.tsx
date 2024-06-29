@@ -1,4 +1,5 @@
-import { MovieDetailPage } from "@/pages";
+import { authLoader } from "@/components/shared/utils/authLoader";
+import { MovieDetailPage, MyPage } from "@/pages";
 import MainPage from "@/pages/MainPage/MainPage";
 import MainLayout from "@/styles/MainLayout";
 import { createBrowserRouter } from "react-router-dom";
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <MainPage /> },
       { path: "/movie/:movieId", element: <MovieDetailPage /> },
+      { path: "/mypage", element: <MyPage />, loader: authLoader },
     ],
   },
   {

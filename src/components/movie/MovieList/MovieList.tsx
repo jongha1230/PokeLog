@@ -1,45 +1,66 @@
-import { usePopularMovies } from "@/components/shared/hooks/useMovies";
+import { Movie, MovieListProps, MovieResponse } from "@/types/MovieType";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 import MovieCard from "../MovieCard";
 
-function MovieList() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    usePopularMovies();
-
+function MovieList({
+  data,
+  isInfinite = false,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  status,
+}: MovieListProps) {
   const { ref, inView } = useInView({
     threshold: 0,
   });
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (isInfinite && inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage, hasNextPage]);
+  }, [inView, fetchNextPage, hasNextPage, isInfinite]);
 
   if (status === "pending") return <div>로딩중</div>;
   if (status === "error") return <div>오류 발생!</div>;
 
   return (
-    <div>
-      <div>
-        {data?.pages.map((page, i) => (
-          <div key={i}>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8 bg-white">
-              {page.results.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <div ref={ref}>
-        {isFetchingNextPage
-          ? "Loading more..."
-          : hasNextPage
-          ? "Load More"
-          : "No more movies"}
-      </div>
+    <div className="container mx-auto px-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
+        {Array.isArray(data)
+          ? data.map((movie: Movie, i: number) => (
+              <li
+                key={i}
+                className="border shadow-md p-4 m-4 rounded-3xl bg-white/90"
+              >
+                <Link to={`/movie/${movie.id}`}>
+                  <MovieCard movie={movie} />
+                </Link>
+              </li>
+            ))
+          : data?.pages.map((page: MovieResponse) =>
+              page.results.map((movie: Movie) => (
+                <li
+                  key={movie.id}
+                  className="border shadow-md p-4 m-4 rounded-3xl bg-white/90"
+                >
+                  <Link to={`/movie/${movie.id}`}>
+                    <MovieCard movie={movie} />
+                  </Link>
+                </li>
+              ))
+            )}
+      </ul>
+      {isInfinite && (
+        <div ref={ref}>
+          {isFetchingNextPage
+            ? "Loading more..."
+            : hasNextPage
+            ? "Load More"
+            : "No more movies"}
+        </div>
+      )}
     </div>
   );
 }

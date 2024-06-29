@@ -33,7 +33,7 @@ function Header({ user, onClick }: PropsWithChildren<HeaderProps>) {
             {user ? (
               <>
                 <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
-                  <Link to="/">마이페이지</Link>
+                  <Link to="/mypage">마이페이지</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
                   <button onClick={onClick}>로그아웃</button>
