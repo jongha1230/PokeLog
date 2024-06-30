@@ -36,6 +36,7 @@ export type MovieDetailResponse = {
 type BaseProps = {
   data: InfiniteData<MovieResponse> | Movie[] | undefined;
   status: "pending" | "error" | "success";
+  title: string;
 };
 
 type InfiniteProps = {

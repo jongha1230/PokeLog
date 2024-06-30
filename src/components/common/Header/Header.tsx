@@ -1,50 +1,94 @@
 import { UserProfile } from "@/types/supabaseTypes";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { Link } from "react-router-dom";
+import userDefaultImage from "../../../assets/blank-profile-picture-973460_640.png";
 
 interface HeaderProps {
   user: UserProfile | null;
-  onClick: () => void;
+  signOut: () => void;
 }
 
-function Header({ user, onClick }: PropsWithChildren<HeaderProps>) {
+function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <header className="border-b border-black bg-gray-900 ">
       <div className="container mx-auto max-x-[1024px] px-5 h-16 flex items-center">
-        <Link to={"/"} className="text-3xl font-bold text-red-500">
+        <Link to={"/"} className="text-3xl font-bold text-red-500 text-nowrap">
           MOVIE MATE
         </Link>
         <nav className="ml-20 text-white">
           <ul className="flex gap-x-8">
-            <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
+            <li className="px-4 py-2 hover:bg-gray-700 rounded text-nowrap">
               <Link to="/">영화 목록</Link>
             </li>
-            <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
-              <Link to="/">즐겨찾기</Link>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
+            <li className="px-4 py-2 hover:bg-gray-700 rounded text-nowrap">
               <Link to="/">영화 추천 설문</Link>
             </li>
           </ul>
         </nav>
 
-        <div className="ml-auto mr-8 text-white">
-          <ul className="flex gap-x-8">
+        <div
+          className="flex ml-auto mr-8 h-full text-white relative"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <ul className="flex items-center gap-x-8">
             {user ? (
-              <>
-                <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
-                  <Link to="/mypage">마이페이지</Link>
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-700 rounded text-ellipsis">
-                  <button onClick={onClick}>로그아웃</button>
-                </li>
-              </>
+              <div className="flex items-center gap-x-4">
+                <img
+                  src={user.profile_picture ?? userDefaultImage}
+                  alt="user-profile"
+                  className="rounded-full w-10 h-10 object-cover"
+                />
+                <p className="text-nowrap font-semibold">{user.nickname}</p>
+                <svg
+                  className={`transition-transform transform ${
+                    isHovered ? "rotate-180" : "rotate-0"
+                  }`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  fill="currentColor"
+                >
+                  <path d="M7 10l5 5 5-5z" />
+                </svg>
+                {isHovered && (
+                  <ul className="absolute top-12 left-0 mt-2 w-48 bg-gray-900/95 text-white shadow-lg rounded-lg z-20 transition-transform transform duration-200">
+                    <li className="p-4 border-t border-gray-700">
+                      <Link
+                        to="/mypage"
+                        className="w-full text-left text-sm hover:bg-gray-700 hover:text-red-500 rounded-lg p-2"
+                      >
+                        마이 페이지
+                      </Link>
+                    </li>
+                    <li className="p-4 border-t border-gray-700">
+                      <Link
+                        to="/bookmark"
+                        className="w-full text-left text-sm hover:bg-gray-700 hover:text-red-500 rounded-lg p-2"
+                      >
+                        북마크 목록
+                      </Link>
+                    </li>
+                    <li className="p-4 border-t border-gray-700 ">
+                      <button
+                        onClick={signOut}
+                        className="w-full text-left text-sm hover:bg-gray-700 hover:text-red-500 rounded-lg p-2"
+                      >
+                        로그아웃
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </div>
             ) : (
               <>
-                <li className="text-ellipsis">
+                <li className="text-nowrap">
                   <Link to="/auth/login">로그인</Link>
                 </li>
-                <li className="text-ellipsis">
+                <li className="text-nowrap">
                   <Link to="/auth/signup">회원가입</Link>
                 </li>
               </>

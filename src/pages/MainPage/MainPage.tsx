@@ -8,6 +8,7 @@ function MainPage() {
   return (
     <div className="bg-slate-800">
       <MovieList
+        title="인기 영화"
         data={data}
         status={status}
         isInfinite={true}

@@ -11,6 +11,7 @@ function MovieList({
   hasNextPage,
   isFetchingNextPage,
   status,
+  title,
 }: MovieListProps) {
   const { ref, inView } = useInView({
     threshold: 0,
@@ -27,7 +28,8 @@ function MovieList({
 
   return (
     <div className="container mx-auto px-4">
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
+      <h2 className="text-white text-3xl font-bold py-4 px-6">{title}</h2>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
         {Array.isArray(data)
           ? data.map((movie: Movie, i: number) => (
               <li
