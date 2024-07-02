@@ -2,7 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "digimon-image": "url('/digimon.jpg')",
+        "pokemon-image": "url('/pokemon.jpg')",
+      },
+    },
   },
   plugins: [],
 };

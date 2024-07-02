@@ -1,10 +1,14 @@
-import { Movie, MovieListProps, MovieResponse } from "@/types/MovieType";
+import {
+  Pokemon,
+  PokemonListProps,
+  PokemonResponse,
+} from "@/types/PokemonType";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
-import MovieCard from "../MovieCard";
+import PokemonCard from "../PokemonCard";
 
-function MovieList({
+const PokemonList = ({
   data,
   isInfinite = false,
   fetchNextPage,
@@ -12,7 +16,7 @@ function MovieList({
   isFetchingNextPage,
   status,
   title,
-}: MovieListProps) {
+}: PokemonListProps) => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -31,24 +35,24 @@ function MovieList({
       <h2 className="text-white text-3xl font-bold py-4 px-6">{title}</h2>
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
         {Array.isArray(data)
-          ? data.map((movie: Movie, i: number) => (
+          ? data.map((pokemon: Pokemon) => (
               <li
-                key={i}
+                key={pokemon.id}
                 className="border shadow-md p-4 m-4 rounded-3xl bg-white/90"
               >
-                <Link to={`/movie/${movie.id}`}>
-                  <MovieCard movie={movie} />
+                <Link to={`/pokemon/${pokemon.id}`}>
+                  <PokemonCard pokemon={pokemon} />
                 </Link>
               </li>
             ))
-          : data?.pages.map((page: MovieResponse) =>
-              page.results.map((movie: Movie) => (
+          : data?.pages.map((page: PokemonResponse) =>
+              page.results.map((pokemon: Pokemon) => (
                 <li
-                  key={movie.id}
+                  key={pokemon.id}
                   className="border shadow-md p-4 m-4 rounded-3xl bg-white/90"
                 >
-                  <Link to={`/movie/${movie.id}`}>
-                    <MovieCard movie={movie} />
+                  <Link to={`/pokemon/${pokemon.id}`}>
+                    <PokemonCard pokemon={pokemon} />
                   </Link>
                 </li>
               ))
@@ -60,11 +64,11 @@ function MovieList({
             ? "Loading more..."
             : hasNextPage
             ? "Load More"
-            : "No more movies"}
+            : "No more Pokémon"}
         </div>
       )}
     </div>
   );
-}
+};
 
-export default MovieList;
+export default PokemonList;

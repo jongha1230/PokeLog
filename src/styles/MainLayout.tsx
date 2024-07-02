@@ -6,10 +6,10 @@ function MainLayout() {
   const { user, signOut } = useAuthStore();
 
   return (
-    <div className="main-layout bg-gray-900  min-h-screen">
+    <div className="main-layout min-h-screen bg-pokemon-image bg-fixed bg-current bg-center">
       {/* 헤더 */}
       <Header user={user} signOut={signOut} />
-      <main className="bg-slate-800 min-h-screen">
+      <main className="min-h-screen">
         <Outlet />
       </main>
     </div>

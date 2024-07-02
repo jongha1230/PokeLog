@@ -1,14 +1,14 @@
 import axios, { AxiosInstance } from "axios";
 import AuthAPI from "./auth.api";
 import BookmarkAPI from "./bookmark.api";
-import MovieAPI from "./movie.api";
+import PokemonAPI from "./pokemon.api";
 import ReviewAPI from "./review.api";
 
-const BASE_URL = "https://api.themoviedb.org/3";
+const BASE_URL = "https://pokeapi.co/api/v2";
 class API {
   private axios: AxiosInstance;
   auth: AuthAPI;
-  movie: MovieAPI;
+  pokemon: PokemonAPI;
   review: ReviewAPI;
   bookmark: BookmarkAPI;
 
@@ -18,7 +18,7 @@ class API {
     this.auth = new AuthAPI();
     this.review = new ReviewAPI();
     this.bookmark = new BookmarkAPI();
-    this.movie = new MovieAPI(this.axios);
+    this.pokemon = new PokemonAPI(this.axios);
   }
 }
 
