@@ -1,3 +1,4 @@
+import TypeChip, { ValidType } from "@/components/common/TypeChip/TypeChip";
 import { Pokemon } from "@/types/PokemonType";
 import { PropsWithChildren } from "react";
 
@@ -8,11 +9,15 @@ type PokemonCardProps = {
 const PokemonCard = ({ pokemon }: PropsWithChildren<PokemonCardProps>) => {
   const spriteUrl = pokemon.sprites?.front_default || "";
   const koreanName = pokemon.korean_name || pokemon.name;
-  const types =
-    pokemon.types?.map((type) => type.type.korean_name).join(", ") || "Unknown";
+
+  const typeChips = pokemon.types?.map((type) => {
+    const typeName =
+      (type.type.korean_name as ValidType) || type.type.name || "없음";
+    return <TypeChip key={type.type.name} name={typeName} type={typeName} />;
+  }) || <TypeChip name="없음" type="없음" />;
 
   return (
-    <div className="pokemon-card">
+    <div className="pokemon-card flex flex-col items-center">
       {spriteUrl ? (
         <img
           src={spriteUrl}
@@ -24,9 +29,9 @@ const PokemonCard = ({ pokemon }: PropsWithChildren<PokemonCardProps>) => {
       ) : (
         <div className="pokemon-image-placeholder">No Image</div>
       )}
-      <h3 className="pokemon-name">{koreanName}</h3>
-      <p className="pokemon-id">{`도감 번호: ${pokemon.id}`}</p>
-      <p className="pokemon-types">{`타입: ${types}`}</p>
+      <h3 className="pokemon-name ">{koreanName}</h3>
+
+      <div className="pokemon-types flex mt-2 gap-2.5">{typeChips}</div>
     </div>
   );
 };

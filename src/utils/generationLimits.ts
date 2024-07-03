@@ -11,8 +11,7 @@ const generationLimits: GenerationLimits = {
   6: { start: 650, end: 721 },
   7: { start: 722, end: 809 },
   8: { start: 810, end: 898 },
-  9: { start: 899, end: 1010 },
-  10: { start: 1011, end: 1025 },
+  9: { start: 899, end: 1025 },
 };
 
 export default generationLimits;
