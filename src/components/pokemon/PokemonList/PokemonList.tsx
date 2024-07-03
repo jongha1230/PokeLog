@@ -24,7 +24,8 @@ const PokemonList = ({
   isFetchingNextPage,
   status,
   title,
-}: PokemonListProps) => {
+  filterComponent,
+}: PokemonListProps & { filterComponent: React.ReactNode }) => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -41,6 +42,7 @@ const PokemonList = ({
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-black text-3xl font-bold py-4 px-6">{title}</h2>
+      {filterComponent}
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
         {isInfiniteData(data)
           ? // InfiniteData<PokemonResponse> 타입일 경우

@@ -34,47 +34,47 @@ const chipVariants = cva(
       {
         selected: true,
         generation: 1,
-        class: "text-red-500 bg-white border-red-500",
+        className: "text-red-500 bg-white border-red-500",
       },
       {
         selected: true,
         generation: 2,
-        class: "text-green-500 bg-white border-green-500",
+        className: "text-green-500 bg-white border-green-500",
       },
       {
         selected: true,
         generation: 3,
-        class: "text-pink-500  bg-white/100 border-pink-500",
+        className: "text-pink-500  bg-white/100 border-pink-500",
       },
       {
         selected: true,
         generation: 4,
-        class: "text-blue-500 bg-white border-blue-500",
+        className: "text-blue-500 bg-white border-blue-500",
       },
       {
         selected: true,
         generation: 5,
-        class: "text-gray-500 bg-white border-gray-500",
+        className: "text-gray-500 bg-white border-gray-500",
       },
       {
         selected: true,
         generation: 6,
-        class: "text-indigo-500 bg-white/100 border-indigo-500",
+        className: "text-indigo-500 bg-white/100 border-indigo-500",
       },
       {
         selected: true,
         generation: 7,
-        class: "text-orange-500 bg-white/100 border-orange-500",
+        className: "text-orange-500 bg-white/100 border-orange-500",
       },
       {
         selected: true,
         generation: 8,
-        class: "text-teal-500 bg-white/100 border-teal-500",
+        className: "text-teal-500 bg-white/100 border-teal-500",
       },
       {
         selected: true,
         generation: 9,
-        class: "text-yellow-500 bg-white/100 border-yellow-500",
+        className: "text-yellow-500 bg-white/100 border-yellow-500",
       },
     ],
   }

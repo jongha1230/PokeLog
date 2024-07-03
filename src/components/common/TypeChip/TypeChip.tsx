@@ -33,7 +33,7 @@ const chipVariants = cva(
         악: "bg-gray-800 border-gray-800 text-white",
         페어리: "bg-pink-300 border-pink-300 text-white",
         없음: "bg-gray-200 border-gray-200 text-black",
-        스텔라: "bg-silver-500 border-silver-500 text-white",
+        스텔라: "bg-gray-300 border-gray-500 text-white",
       },
     },
   }

@@ -60,29 +60,31 @@ function PokeLog() {
 
           <div className="bg-gray-800 p-4 rounded-lg shadow-md h-full overflow-y-auto">
             {/* Menu Title */}
-            <h2 className="text-2xl font-bold text-white mb-4">메뉴</h2>
-            <nav>
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">
+              메뉴
+            </h2>
+            <nav className="flex flex-wrap gap-x-2 items-center justify-center">
               <Link
                 to="/"
-                className="block bg-blue-500 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-blue-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
               >
                 홈
               </Link>
               <Link
                 to="/bookmark"
-                className="block bg-green-500 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-green-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
               >
                 북마크
               </Link>
               <Link
                 to="/auth/login"
-                className="block bg-red-500 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-red-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
               >
                 로그인
               </Link>
               <Link
                 to="/auth/signup"
-                className="block bg-yellow-500 text-white py-2 rounded-lg text-center"
+                className="block bg-yellow-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
               >
                 회원가입
               </Link>

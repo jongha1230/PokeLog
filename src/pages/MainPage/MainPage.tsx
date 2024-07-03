@@ -36,32 +36,35 @@ function MainPage() {
   };
 
   const getTitle = () => {
-    if (activeGenerations.length === 0) return "전체 포켓몬 목록";
+    if (activeGenerations.length === 0) return "세대별 포켓몬 목록";
     return `${activeGenerations.join(", ")}세대 포켓몬 목록`;
   };
 
+  const filterComponent = (
+    <div className="flex py-4 gap-x-2 flex-wrap justify-center gap-y-2">
+      <div
+        className={`text-sm border rounded-full px-3 py-0.5 hover:opacity-50 transition-opacity font-semibold cursor-pointer ${
+          activeGenerations.length === 0
+            ? "bg-gray-200 border-gray-200 text-black"
+            : "bg-gray-800 border-gray-800 text-white"
+        }`}
+        onClick={handleAllToggle}
+      >
+        전체
+      </div>
+      {generations.map((gen) => (
+        <GenerationChip
+          key={gen}
+          generation={gen}
+          isSelected={activeGenerations.includes(gen)}
+          onToggle={handleGenerationToggle}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <div className="bg-green-200 p-4 rounded-lg shadow-md">
-      <div className="flex justify-center py-4 gap-x-2 flex-wrap">
-        <div
-          className={`text-sm border rounded-full px-3 py-0.5 hover:opacity-50 transition-opacity font-semibold cursor-pointer ${
-            activeGenerations.length === 0
-              ? "bg-gray-200 border-gray-200 text-black"
-              : "bg-gray-800 border-gray-800 text-white"
-          }`}
-          onClick={handleAllToggle}
-        >
-          전체
-        </div>
-        {generations.map((gen) => (
-          <GenerationChip
-            key={gen}
-            generation={gen}
-            isSelected={activeGenerations.includes(gen)}
-            onToggle={handleGenerationToggle}
-          />
-        ))}
-      </div>
       <PokemonList
         title={getTitle()}
         data={data}
@@ -70,6 +73,7 @@ function MainPage() {
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
+        filterComponent={filterComponent}
       />
     </div>
   );
