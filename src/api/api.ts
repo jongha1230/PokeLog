@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 import AuthAPI from "./auth.api";
 import BookmarkAPI from "./bookmark.api";
+import ReviewAPI from "./comment.api";
 import PokemonAPI from "./pokemon.api";
-import ReviewAPI from "./review.api";
 
 const BASE_URL = "https://pokeapi.co/api/v2";
 class API {

@@ -28,9 +28,7 @@ function MainPage() {
   };
 
   const handleAllToggle = () => {
-    if (activeGenerations.length === 0) {
-      setActiveGenerations(generations);
-    } else {
+    if (activeGenerations.length !== 0) {
       setActiveGenerations([]);
     }
   };

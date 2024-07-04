@@ -1,5 +1,9 @@
-import { fetchKoreanNameAndTypes } from "@/components/shared/utils/fetchKoreanNameAndTypes ";
-import { Pokemon, PokemonResponse } from "@/types/PokemonType";
+import translateToKorean from "@/components/shared/utils/translateToKorean";
+import {
+  Pokemon,
+  PokemonResponse,
+  TranslatedKoreanData,
+} from "@/types/PokemonType";
 import { AxiosInstance } from "axios";
 
 class PokemonAPI {
@@ -21,7 +25,7 @@ class PokemonAPI {
     const results = await Promise.all(
       response.data.results.map(async (pokemon) => {
         const pokemonDetail = await this.axios.get<Pokemon>(pokemon.url);
-        const { koreanName, koreanTypes } = await fetchKoreanNameAndTypes(
+        const { koreanName, koreanTypes } = await translateToKorean(
           pokemonDetail.data.species.url,
           pokemonDetail.data.types,
           pokemonDetail.data.name
@@ -55,7 +59,7 @@ class PokemonAPI {
     const results = await Promise.all(
       response.data.results.map(async (pokemon) => {
         const pokemonDetail = await this.axios.get<Pokemon>(pokemon.url);
-        const { koreanName, koreanTypes } = await fetchKoreanNameAndTypes(
+        const { koreanName, koreanTypes } = await translateToKorean(
           pokemonDetail.data.species.url,
           pokemonDetail.data.types,
           pokemonDetail.data.name
@@ -73,15 +77,29 @@ class PokemonAPI {
   };
 
   // 포켓몬 항목 데이터
-  fetchPokemonData = async (id: string) => {
+  fetchPokemonData = async (id: string): Promise<TranslatedKoreanData> => {
     const response = await this.axios.get<Pokemon>(`/pokemon/${id}`);
-    const { koreanName, koreanTypes } = await fetchKoreanNameAndTypes(
-      response.data.species.url,
-      response.data.types,
-      response.data.name
-    );
+    const { koreanName, koreanTypes, koreanAbilities, koreanStats } =
+      await translateToKorean(
+        response.data.species.url,
+        response.data.types,
+        response.data.name,
+        response.data.abilities,
+        response.data.stats
+      );
 
-    return { ...response.data, korean_name: koreanName, types: koreanTypes };
+    const image =
+      response.data.sprites.other?.["official-artwork"]?.front_default ||
+      response.data.sprites.front_default;
+
+    return {
+      ...response.data,
+      korean_name: koreanName,
+      types: koreanTypes,
+      abilities: koreanAbilities || response.data.abilities,
+      stats: koreanStats || response.data.stats,
+      image,
+    };
   };
 
   // 포켓몬 종 데이터

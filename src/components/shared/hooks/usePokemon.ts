@@ -128,18 +128,29 @@ export const usePokemonListWithSpecies = (activeGenerations: number[]) => {
     fetchPokemonList
   );
 
+  const allPokemon =
+    infiniteScrollResult.data?.pages.flatMap((page) => page.results) ?? [];
+
+  const filteredPokemon =
+    activeGenerations.length === 0
+      ? allPokemon
+      : allPokemon.filter((pokemon) =>
+          activeGenerations.some((gen) => {
+            const { start, end } = generationLimits[gen];
+            return pokemon.id >= start && pokemon.id <= end;
+          })
+        );
+
   const speciesQueries = useQueries({
-    queries:
-      infiniteScrollResult.data?.pages.flatMap((page) =>
-        page.results.map((pokemon: Pokemon) => ({
-          queryKey: ["pokemonSpecies", pokemon.id],
-          queryFn: () => api.pokemon.fetchPokemonSpecies(pokemon.id.toString()),
-        }))
-      ) || [],
+    queries: filteredPokemon.map((pokemon: Pokemon) => ({
+      queryKey: ["pokemonList", pokemon.id],
+      queryFn: () => api.pokemon.fetchPokemonSpecies(pokemon.id.toString()),
+    })),
   });
 
   return {
     ...infiniteScrollResult,
+    filteredPokemon,
     speciesData: speciesQueries,
   };
 };

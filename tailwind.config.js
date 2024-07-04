@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        xxl: "1660px",
+      },
       backgroundImage: {
         "digimon-image": "url('/digimon.jpg')",
         "pokemon-image": "url('/pokemon.jpg')",

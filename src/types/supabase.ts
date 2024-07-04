@@ -1,3 +1,4 @@
+// npx supabase gen types typescript --project-id xwwpniuwunrvvbjopesj --schema public > src/types/supabase.ts
 export type Json =
   | string
   | number
@@ -12,67 +13,72 @@ export type Database = {
       bookmarks: {
         Row: {
           id: number;
-          movie_genre: string | null;
-          movie_id: string;
-          movie_title: string;
-          user_id: string | null;
+          pokemonId: string;
+          userId: string | null;
         };
         Insert: {
-          movie_genre?: string | null;
-          movie_id: string;
-          movie_title: string;
-          user_id: string;
+          id?: number;
+          pokemonId: string;
+          userId?: string | null;
         };
         Update: {
           id?: number;
-          movie_genre?: string | null;
-          movie_id?: string;
-          movie_title?: string;
-          user_id?: string | null;
+          pokemonId?: string;
+          userId?: string | null;
         };
         Relationships: [
           {
             foreignKeyName: "bookmarks_user_id_fkey";
-            columns: ["user_id"];
+            columns: ["userId"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "bookmarks_userId_fkey";
+            columns: ["userId"];
             isOneToOne: false;
             referencedRelation: "users";
             referencedColumns: ["id"];
           }
         ];
       };
-      reviews: {
+      comments: {
         Row: {
-          user: {
-            nickname: string;
-            profile_picture: string | null;
-          };
-          created_at: string | null;
+          comment: string;
+          createdAt: string | null;
           id: number;
-          movie_id: string;
+          pokemonId: string;
           rating: number;
-          review: string;
-          user_id: string;
+          userId: string;
         };
         Insert: {
-          created_at?: string | null;
+          comment: string;
+          createdAt?: string | null;
           id?: number;
-          movie_id: string;
+          pokemonId: string;
           rating: number;
-          review: string;
-          user_id: string;
+          userId: string;
         };
         Update: {
-          created_at?: string | null;
-          id: number;
-          movie_id: string;
-          rating: number;
-          review: string;
-          user_id: string;
+          comment?: string;
+          createdAt?: string | null;
+          id?: number;
+          pokemonId?: string;
+          rating?: number;
+          userId?: string;
         };
         Relationships: [
           {
+            foreignKeyName: "comments_userId_fkey";
+            columns: ["userId"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "reviews_user_id_fkey";
-            columns: ["user_id"];
+            columns: ["userId"];
             isOneToOne: false;
             referencedRelation: "users";
             referencedColumns: ["id"];
@@ -88,7 +94,7 @@ export type Database = {
         };
         Insert: {
           email: string;
-          id?: string;
+          id: string;
           nickname: string;
           profile_picture?: string | null;
         };
@@ -98,7 +104,15 @@ export type Database = {
           nickname?: string;
           profile_picture?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Views: {

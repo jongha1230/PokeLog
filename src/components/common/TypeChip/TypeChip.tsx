@@ -1,6 +1,6 @@
 import { VariantProps, cva } from "class-variance-authority";
 
-const chipVariants = cva(
+export const chipVariants = cva(
   [
     "text-sm",
     "border",

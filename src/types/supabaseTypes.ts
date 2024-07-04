@@ -19,11 +19,9 @@ export type BookmarkInsert =
 export type BookmarkUpdate =
   Database["public"]["Tables"]["bookmarks"]["Update"];
 
-// Reviews
-export type ReviewRow = Database["public"]["Tables"]["reviews"]["Row"];
-export type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
-export type ReviewUpdate = Database["public"]["Tables"]["reviews"]["Update"];
-export type ReviewWithUser = Database["public"]["Tables"]["reviews"]["Row"] & {
+// Comments
+
+export type CommentWithUser = Tables<"comments"> & {
   user: {
     nickname: string;
     profile_picture: string | null;

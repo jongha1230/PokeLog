@@ -27,7 +27,7 @@ const chipVariants = cva(
         6: "bg-indigo-500 border-indigo-500",
         7: "bg-orange-500 border-orange-500",
         8: "bg-teal-500 border-teal-500",
-        9: "bg-yellow-500 border-yellow-500",
+        9: "bg-yellow-500",
       },
     },
     compoundVariants: [
@@ -74,7 +74,7 @@ const chipVariants = cva(
       {
         selected: true,
         generation: 9,
-        className: "text-yellow-500 bg-white/100 border-yellow-500",
+        className: "text-yellow-500  bg-gray-50   border-yellow-500",
       },
     ],
   }

@@ -30,21 +30,18 @@ function PokeLog() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-black">
+    <div className="items-center justify-center max-w-[1440px] min-h-screen mx-auto bg-gray-900 text-black">
       {/* Header */}
       <Header user={user} signOut={signOut} />
 
       <div className="flex flex-col md:flex-row bg-gray-700">
         {/* 왼쪽 */}
-        <div className="w-full md:w-2/3 p-4 bg-gray-800 rounded-lg shadow-lg">
-          <div className="">
-            <Outlet />
-          </div>
+        <div className="w-full md:w-2/3 p-4 bg-gray-800 rounded-lg shadow-lg min-h-screen">
+          <Outlet />
         </div>
 
         {/* 오른쪽 */}
-        <div className="fixed right-0 p-4 bg-gray-700 rounded-lg shadow-lg w-full md:w-1/3 h-full z-100 hidden md:block">
-          {/* '맨 위로' 버튼을 오른쪽 고정된 부분의 중앙에 위치 */}
+        <div className="p-4 bg-gray-700 rounded-lg shadow-lg w-full md:w-1/3 h-full sticky top-4">
           {showButton && (
             <div className="flex justify-center mb-4">
               <button
