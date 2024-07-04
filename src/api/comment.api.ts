@@ -2,16 +2,19 @@ import { Tables } from "@/types/supabase";
 import { CommentWithUser } from "@/types/supabaseTypes";
 import supabase from "./supabaseAPI";
 
-class ReviewAPI {
-  // 리뷰 목록 조회
-  async getReviews(movie_id: string): Promise<Tables<"comments">[]> {
+class CommentAPI {
+  // 댓글 목록 조회
+  async getComments(pokemonId: string): Promise<CommentWithUser[]> {
     try {
-      // 영화 ID에 해당하는 리뷰 목록을 조회하며, 각 리뷰 작성자의 닉네임과 프로필 사진도 함께 가져옴
+      console.log("Fetching comments for pokemonId:", pokemonId);
+
       const { data, error } = await supabase
         .from("comments")
-        .select("*, user:users(nickname, profile_picture)")
-        .eq("movie_id", movie_id)
+        .select("*, user:users!comments_userId_fkey(nickname, profile_picture)")
+        .eq("pokemonId", pokemonId)
         .returns<CommentWithUser[]>();
+
+      console.log("Query result:", { data, error });
 
       if (error) {
         throw error;
@@ -19,19 +22,22 @@ class ReviewAPI {
 
       return data as CommentWithUser[];
     } catch (error) {
+      console.error("Error in getComments:", error);
       throw new Error(
         `리뷰 목록 조회중 오류 발생: ${(error as Error).message}`
       );
     }
   }
 
-  // 리뷰 작성
-  async createReview(review: Tables<"comments">): Promise<Tables<"comments">> {
+  // 댓글 작성
+  async createComment(
+    comments: Tables<"comments">
+  ): Promise<Tables<"comments">> {
     try {
-      const { pokemonId, userId, comment, rating } = review;
+      const { pokemonId, userId, comment, rating } = comments;
 
       if (!userId || !pokemonId || !comment || rating === undefined) {
-        throw new Error("리뷰 항목을 다 작성하지 않았습니다.");
+        throw new Error("항목을 다 작성하지 않았습니다.");
       }
 
       const { data, error } = await supabase
@@ -52,23 +58,23 @@ class ReviewAPI {
       }
 
       if (!data || data.length === 0) {
-        throw new Error("리뷰 작성에 실패했습니다.");
+        throw new Error("작성에 실패했습니다.");
       }
 
       return data[0];
     } catch (error) {
-      throw new Error(`리뷰 작성 중 오류 발생: ${(error as Error).message}`);
+      throw new Error(`작성 중 오류 발생: ${(error as Error).message}`);
     }
   }
 
-  // 리뷰 수정
-  async updateReview(review: Tables<"comments">): Promise<Tables<"comments">> {
+  // 댓글 수정
+  async updateComment(review: Tables<"comments">): Promise<Tables<"comments">> {
     try {
       const { id, comment, rating } = review;
       console.log(id);
 
       if (!comment || rating === undefined) {
-        throw new Error("리뷰 항목을 다 작성하지 않았습니다.");
+        throw new Error("항목을 다 작성하지 않았습니다.");
       }
 
       const { data, error } = await supabase
@@ -97,13 +103,13 @@ class ReviewAPI {
     }
   }
 
-  // 리뷰 삭제
-  async deleteReview(reviewId: number) {
+  // 댓글 삭제
+  async deleteComment(commentId: number) {
     try {
       const { error } = await supabase
         .from("comments")
         .delete()
-        .eq("id", reviewId);
+        .eq("id", commentId);
       if (error) {
         throw error;
       }
@@ -114,4 +120,4 @@ class ReviewAPI {
   }
 }
 
-export default ReviewAPI;
+export default CommentAPI;

@@ -1,4 +1,4 @@
-import { PostgrestError, User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 
 import { SignUpResponse, UserProfile } from "@/types/supabaseTypes";
 import supabase from "./supabaseAPI";
@@ -10,7 +10,6 @@ class AuthAPI {
     nickname: string
   ): Promise<{
     signUpData: SignUpResponse;
-    userData: UserProfile | null;
   }> {
     try {
       // 회원가입 요청
@@ -18,6 +17,11 @@ class AuthAPI {
         await supabase.auth.signUp({
           email,
           password,
+          options: {
+            data: {
+              nickname,
+            },
+          },
         });
 
       // 회원가입 오류 처리
@@ -25,29 +29,7 @@ class AuthAPI {
         throw new Error(signUpError.message);
       }
 
-      const userId = signUpData.user?.id;
-
-      // 사용자 ID가 없을 경우 오류 처리
-      if (!userId) {
-        throw new Error("User ID not found after sign-up.");
-      }
-      console.log(userId);
-      // users 테이블에 사용자 정보 추가
-      const { data: userData, error: userError } = (await supabase
-        .from("users")
-        .insert([{ id: userId, email, nickname }])
-        .select()
-        .single()) as {
-        data: UserProfile | null;
-        error: PostgrestError | null;
-      };
-
-      // 사용자 정보 추가 오류 처리
-      if (userError) {
-        throw new Error(userError.message);
-      }
-
-      return { signUpData, userData };
+      return { signUpData };
     } catch (error) {
       throw new Error(`Sign-up failed: ${(error as Error).message}`);
     }

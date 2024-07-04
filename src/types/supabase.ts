@@ -46,8 +46,8 @@ export type Database = {
       comments: {
         Row: {
           comment: string;
-          createdAt: string | null;
-          id: number;
+          createdAt?: string | null;
+          id?: number;
           pokemonId: string;
           rating: number;
           userId: string;
@@ -71,13 +71,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "comments_userId_fkey";
-            columns: ["userId"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "reviews_user_id_fkey";
             columns: ["userId"];
             isOneToOne: false;
             referencedRelation: "users";

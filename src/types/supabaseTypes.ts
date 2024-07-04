@@ -24,6 +24,6 @@ export type BookmarkUpdate =
 export type CommentWithUser = Tables<"comments"> & {
   user: {
     nickname: string;
-    profile_picture: string | null;
+    profile_picture?: string | null;
   };
 };

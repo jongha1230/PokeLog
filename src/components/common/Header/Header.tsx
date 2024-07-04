@@ -12,7 +12,7 @@ function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <header className="border-b border-black bg-red-500 ">
+    <header className="border-b border-black bg-gray-900 ">
       <div className="container mx-auto max-x-[1024px] px-5 h-16 flex items-center">
         <Link
           to={"/"}

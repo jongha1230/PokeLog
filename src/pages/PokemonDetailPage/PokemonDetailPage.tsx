@@ -1,6 +1,10 @@
 import TypeChip, { ValidType } from "@/components/common/TypeChip/TypeChip";
+import CommentForm from "@/components/pokemon/comments/CommentForm";
+import CommentList from "@/components/pokemon/comments/CommentList";
 import { usePokemonData } from "@/components/shared/hooks/usePokemon";
+import { useAuthStore } from "@/store/authStore";
 import { PokemonType } from "@/types/PokemonType";
+import { Tables } from "@/types/supabase";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
@@ -13,7 +17,7 @@ function PokemonDetailPage() {
   const nextId = pokemonId <= 1025 ? pokemonId + 1 : 1026;
 
   const { data, status } = usePokemonData(pokemonId.toString());
-  console.log(data);
+
   const [pokemonData, setPokemonData] = useState<{
     name: string;
     image: string;
@@ -21,6 +25,10 @@ function PokemonDetailPage() {
     abilities: string[];
     stats: { name: string; base_stat: number }[];
   } | null>(null);
+  const [editingComment, setEditingComment] =
+    useState<Tables<"comments"> | null>(null);
+  const [activeTab, setActiveTab] = useState("writeComment");
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     if (data) {
@@ -45,6 +53,20 @@ function PokemonDetailPage() {
       });
     }
   }, [data]);
+
+  const handleSave = () => {
+    setActiveTab("comments");
+    setEditingComment(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingComment(null);
+  };
+
+  const handleEditComment = (comments: Tables<"comments">) => {
+    setEditingComment(comments);
+    setActiveTab("writeComment");
+  };
 
   const typeChips = pokemonData?.types.map((type) => {
     const typeName = type as ValidType;
@@ -132,7 +154,41 @@ function PokemonDetailPage() {
           </>
         )}
       </TypeBgColor>
-      <div className="bg-white w-full mt-10 h-1/4">댓글 폼</div>
+      {/* 탭 추가 */}
+      <div className="flex justify-center mt-4">
+        <button
+          className={`px-4 py-2 mr-2 ${
+            activeTab === "comments" ? "bg-red-600" : "bg-gray-600"
+          } text-white rounded`}
+          onClick={() => setActiveTab("comments")}
+        >
+          댓글 목록
+        </button>
+        <button
+          className={`px-4 py-2 ${
+            activeTab === "writeComment" ? "bg-red-600" : "bg-gray-600"
+          } text-white rounded`}
+          onClick={() => setActiveTab("writeComment")}
+        >
+          댓글 작성
+        </button>
+      </div>
+      {/* 댓글 */}
+      {activeTab === "comments" && (
+        <CommentList
+          pokemonId={pokemonId.toString()}
+          onEdit={handleEditComment}
+        />
+      )}
+      {activeTab === "writeComment" && (
+        <CommentForm
+          pokemonId={pokemonId.toString()}
+          editingComment={editingComment}
+          onSave={handleSave}
+          onCancelEdit={handleCancelEdit}
+          user={user}
+        />
+      )}
     </>
   );
 }
