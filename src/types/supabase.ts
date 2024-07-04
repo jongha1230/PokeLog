@@ -12,7 +12,7 @@ export type Database = {
     Tables: {
       bookmarks: {
         Row: {
-          id: number;
+          id?: number;
           pokemonId: string;
           userId: string | null;
         };

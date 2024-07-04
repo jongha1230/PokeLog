@@ -63,25 +63,25 @@ function PokeLog() {
             <nav className="flex flex-wrap gap-x-2 items-center justify-center">
               <Link
                 to="/"
-                className="block bg-blue-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-blue-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
               >
                 홈
               </Link>
               <Link
                 to="/bookmark"
-                className="block bg-green-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-green-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
               >
                 북마크
               </Link>
               <Link
                 to="/auth/login"
-                className="block bg-red-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-red-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
               >
                 로그인
               </Link>
               <Link
                 to="/auth/signup"
-                className="block bg-yellow-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center"
+                className="block bg-yellow-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
               >
                 회원가입
               </Link>

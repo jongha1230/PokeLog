@@ -33,7 +33,9 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.d.ts",
-    "src/types/supabase.d.ts"
+    "src/types/supabase.d.ts",
+    "custom.d.ts",
+    "svg.d.ts"
   ],
   "exclude": ["node_modules"]
 }
