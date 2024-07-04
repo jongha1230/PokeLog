@@ -1,24 +1,26 @@
-import { MovieResponse } from "@/types/MovieType";
+import { PokemonResponse } from "@/types/PokemonType";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
-// 무한 스크롤 형식
 export const useInfiniteScroll = (
   queryKey: string,
-  fetchFunction: (pageParam: number) => Promise<MovieResponse>
+  fetchFunction: (offset: number) => Promise<PokemonResponse>
 ) => {
   return useInfiniteQuery<
-    MovieResponse,
+    PokemonResponse,
     Error,
-    InfiniteData<MovieResponse>,
+    InfiniteData<PokemonResponse>,
     string[],
     number
   >({
     queryKey: [queryKey],
-    queryFn: ({ pageParam = 1 }) => fetchFunction(pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.total_pages) return lastPage.page + 1;
-      return undefined;
+    queryFn: ({ pageParam = 0 }) => fetchFunction(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextOffset = allPages.reduce(
+        (acc, page) => acc + page.results.length,
+        0
+      );
+      return lastPage.next ? nextOffset : undefined;
     },
+    initialPageParam: 0,
   });
 };

@@ -14,16 +14,19 @@ function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
   return (
     <header className="border-b border-black bg-gray-900 ">
       <div className="container mx-auto max-x-[1024px] px-5 h-16 flex items-center">
-        <Link to={"/"} className="text-3xl font-bold text-red-500 text-nowrap">
-          MOVIE MATE
+        <Link
+          to={"/"}
+          className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-gray-400 to-white"
+        >
+          Pokemon Index
         </Link>
         <nav className="ml-20 text-white">
           <ul className="flex gap-x-8">
             <li className="px-4 py-2 hover:bg-gray-700 rounded text-nowrap">
-              <Link to="/">영화 목록</Link>
+              <Link to="/">포켓몬 목록</Link>
             </li>
             <li className="px-4 py-2 hover:bg-gray-700 rounded text-nowrap">
-              <Link to="/">영화 추천 설문</Link>
+              <Link to="/">포켓몬 추천 받기</Link>
             </li>
           </ul>
         </nav>
@@ -69,7 +72,7 @@ function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
                         to="/bookmark"
                         className="w-full text-left text-sm hover:bg-gray-700 hover:text-red-500 rounded-lg p-2"
                       >
-                        북마크 목록
+                        목록
                       </Link>
                     </li>
                     <li className="p-4 border-t border-gray-700 ">

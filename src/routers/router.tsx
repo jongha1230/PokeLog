@@ -1,7 +1,7 @@
 import { authLoader } from "@/components/shared/utils/authLoader";
-import { BookMarkListPage, MovieDetailPage } from "@/pages";
+import { BookMarkListPage, PokemonDetailPage } from "@/pages";
 import MainPage from "@/pages/MainPage/MainPage";
-import MainLayout from "@/styles/MainLayout";
+import PokeLog from "@/styles/PokeLog";
 import { createBrowserRouter } from "react-router-dom";
 import { LoginForm, SignUpForm } from "../components";
 import { AuthPage } from "../pages";
@@ -9,10 +9,10 @@ import { AuthPage } from "../pages";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <PokeLog />,
     children: [
       { path: "/", element: <MainPage /> },
-      { path: "/movie/:movieId", element: <MovieDetailPage /> },
+      { path: "/pokemon/:id", element: <PokemonDetailPage /> },
       { path: "/bookmark", element: <BookMarkListPage />, loader: authLoader },
     ],
   },
