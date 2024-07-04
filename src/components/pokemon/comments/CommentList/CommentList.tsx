@@ -30,7 +30,7 @@ const CommentList = ({ pokemonId, onEdit }: CommentListProps) => {
           .map((comment) => (
             <li
               key={comment.id}
-              className="bg-gray-700 rounded-lg p-4 shadow-md"
+              className="bg-gray-500/50 rounded-lg p-4 shadow-md"
             >
               <div className="flex justify-between items-start mb-2">
                 <div>
