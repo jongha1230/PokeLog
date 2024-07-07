@@ -9,11 +9,11 @@ import {
 import { usePokemonData } from "@/components/shared/hooks/usePokemon";
 import { useAuthStore } from "@/store/authStore";
 import { PokemonType } from "@/types/PokemonType";
-import { Tables } from "@/types/supabase";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 
+import { Button } from "@/components/common";
 import BookmarkIcon from "@/components/common/BookmarkIcon/BookmarkIcon";
 import TypeBgColor from "./TypeBgColor";
 
@@ -32,8 +32,7 @@ function PokemonDetailPage() {
     abilities: string[];
     stats: { name: string; base_stat: number }[];
   } | null>(null);
-  const [editingComment, setEditingComment] =
-    useState<Tables<"comments"> | null>(null);
+
   const [activeTab, setActiveTab] = useState("comments");
   const user = useAuthStore((state) => state.user);
 
@@ -77,16 +76,6 @@ function PokemonDetailPage() {
 
   const handleSave = () => {
     setActiveTab("comments");
-    setEditingComment(null);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingComment(null);
-  };
-
-  const handleEditComment = (comments: Tables<"comments">) => {
-    setEditingComment(comments);
-    setActiveTab("writeComment");
   };
 
   const handleToggleBookmark = () => {
@@ -176,7 +165,7 @@ function PokemonDetailPage() {
                     {user && (
                       <button onClick={handleToggleBookmark}>
                         <BookmarkIcon
-                          fill={isBookmarked ? "red" : "black"}
+                          fill={isBookmarked ? "red" : "white"}
                           stroke={isBookmarked ? "red" : "black"}
                           className="w-6 h-6 inline-block ml-2"
                         />
@@ -201,36 +190,26 @@ function PokemonDetailPage() {
         )}
       </TypeBgColor>
       {/* 탭 추가 */}
-      <div className="flex justify-center mt-4">
-        <button
-          className={`px-4 py-2 mr-2 ${
-            activeTab === "comments" ? "bg-red-600" : "bg-gray-600"
-          } text-white rounded hover:brightness-90`}
+      <div className="flex justify-center mt-4 gap-4">
+        <Button
+          intent={`${activeTab === "comments" ? "red" : "secondary"}`}
+          size={"md"}
           onClick={() => setActiveTab("comments")}
         >
           댓글 목록
-        </button>
-        <button
-          className={`px-4 py-2 ${
-            activeTab === "writeComment" ? "bg-red-600" : "bg-gray-600"
-          } text-white rounded hover:brightness-90`}
+        </Button>
+        <Button
+          intent={`${activeTab === "writeComment" ? "red" : "secondary"}`}
+          size={"md"}
           onClick={() => setActiveTab("writeComment")}
         >
           댓글 작성
-        </button>
+        </Button>
       </div>
       {/* 댓글 */}
-      {activeTab === "comments" && (
-        <CommentList pokemonId={pokemonId} onEdit={handleEditComment} />
-      )}
+      {activeTab === "comments" && <CommentList pokemonId={pokemonId} />}
       {activeTab === "writeComment" && (
-        <CommentForm
-          pokemonId={pokemonId}
-          editingComment={editingComment}
-          onSave={handleSave}
-          onCancelEdit={handleCancelEdit}
-          user={user}
-        />
+        <CommentForm pokemonId={pokemonId} onSave={handleSave} user={user} />
       )}
     </>
   );

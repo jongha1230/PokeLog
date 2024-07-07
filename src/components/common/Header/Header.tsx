@@ -20,16 +20,6 @@ function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
         >
           Pokemon Index
         </Link>
-        <nav className="ml-20 text-white">
-          <ul className="flex gap-x-8">
-            <li className="px-4 py-2 hover:bg-gray-700 rounded text-nowrap">
-              <Link to="/">포켓몬 목록</Link>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700 rounded text-nowrap">
-              <Link to="/">포켓몬 추천 받기</Link>
-            </li>
-          </ul>
-        </nav>
 
         <div
           className="flex ml-auto mr-8 h-full text-white relative"
@@ -65,14 +55,6 @@ function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
                         className="w-full text-left text-sm hover:bg-gray-700 hover:text-red-500 rounded-lg p-2"
                       >
                         마이 페이지
-                      </Link>
-                    </li>
-                    <li className="p-4 border-t border-gray-700">
-                      <Link
-                        to="/bookmark"
-                        className="w-full text-left text-sm hover:bg-gray-700 hover:text-red-500 rounded-lg p-2"
-                      >
-                        목록
                       </Link>
                     </li>
                     <li className="p-4 border-t border-gray-700 ">

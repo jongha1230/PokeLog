@@ -1,8 +1,7 @@
-import { Header } from "@/components/common";
+import { Button, Header } from "@/components/common";
 import { useAuthStore } from "@/store/authStore";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
-import { Link } from "react-router-dom";
 
 function PokeLog() {
   const { user, signOut } = useAuthStore();
@@ -61,30 +60,18 @@ function PokeLog() {
               메뉴
             </h2>
             <nav className="flex flex-wrap gap-x-2 items-center justify-center">
-              <Link
-                to="/"
-                className="block bg-blue-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
-              >
-                홈
-              </Link>
-              <Link
-                to="/bookmark"
-                className="block bg-green-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
-              >
+              <Button to="/" size={"lg"}>
+                포켓몬 도감
+              </Button>
+              <Button to="/recommend" intent={"survey"} size={"lg"}>
+                포켓몬 추천 받기
+              </Button>
+              <Button to="/bookmark" intent={"red"} size={"lg"}>
                 북마크
-              </Link>
-              <Link
-                to="/auth/login"
-                className="block bg-red-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
-              >
-                로그인
-              </Link>
-              <Link
-                to="/auth/signup"
-                className="block bg-yellow-500 w-2/5 text-white py-2 rounded-lg mb-2 text-center hover:brightness-90"
-              >
-                회원가입
-              </Link>
+              </Button>
+              <Button to="/" intent={"game"} size={"lg"}>
+                캐치마인드
+              </Button>
             </nav>
           </div>
         </div>
