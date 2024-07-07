@@ -10,7 +10,7 @@ type ButtonProps = ButtonVariantProps &
 type ButtonVariantProps = VariantProps<typeof buttonVariant>;
 
 const buttonVariant = cva(
-  "rounded text-white [&+&]: mb-2 hover:brightness-90 active:brightness-75",
+  "rounded text-white [&+&]: mb-2 text-wrap break-keep text-center hover:brightness-90 active:brightness-75",
   {
     variants: {
       intent: {
@@ -24,7 +24,7 @@ const buttonVariant = cva(
       size: {
         sm: "px-3 py-1 text-sm",
         md: "px-4 py-1.5 text-[17px]",
-        lg: "w-2/5 py-2.5 text-[19px] text-center rounded-lg",
+        lg: "w-2/5  py-2.5 text-[19px] text-center rounded-lg",
       },
     },
     defaultVariants: {

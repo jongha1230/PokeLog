@@ -66,9 +66,9 @@ const PokemonList = ({
               : data?.map((pokemon: Pokemon) => (
                   <li
                     key={pokemon.name}
-                    className="border shadow-md p-4 m-4 rounded-3xl bg-white/90"
+                    className="border shadow-md p-4 m-4 rounded-3xl w-48 bg-white"
                   >
-                    <Link to={`/pokemon/${pokemon.name}`}>
+                    <Link to={`/pokemon/${pokemon.id}`}>
                       <PokemonCard pokemon={pokemon} />
                     </Link>
                   </li>
