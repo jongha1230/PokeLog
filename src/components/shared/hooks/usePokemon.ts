@@ -1,8 +1,13 @@
 import api from "@/api";
 import generationLimits from "@/utils/generationLimits";
 
-import { Pokemon, PokemonResponse } from "@/types/PokemonType";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import {
+  Pokemon,
+  PokemonResponse,
+  TranslatedKoreanData,
+} from "@/types/PokemonType";
+import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useInfiniteScroll } from "./useInfiniteScroll";
 
 // 세대별 포켓몬 목록 불러오기
@@ -63,28 +68,54 @@ export const usePokemonSpecies = (id: string) => {
   });
 };
 
-// 포켓몬 타입 데이터 불러오기
-export const usePokemonType = (type: string) => {
-  return useQuery({
-    queryKey: ["pokemonType", type],
-    queryFn: () => api.pokemon.fetchPokemonType(type),
-  });
-};
+// 북마크 목록 불러오기
+export const useGetBookmarksWithDetails = (userId: string) => {
+  const queryClient = useQueryClient();
 
-// 포켓몬 능력 데이터 불러오기
-export const usePokemonAbility = (ability: string) => {
-  return useQuery({
-    queryKey: ["pokemonAbility", ability],
-    queryFn: () => api.pokemon.fetchPokemonAbility(ability),
+  const bookmarksQuery = useQuery({
+    queryKey: ["bookmarks", userId],
+    queryFn: () => api.bookmark.getBookmarks(userId),
+    enabled: !!userId,
   });
-};
 
-// 포켓몬 기술 데이터 불러오기
-export const usePokemonMove = (move: string) => {
-  return useQuery({
-    queryKey: ["pokemonMove", move],
-    queryFn: () => api.pokemon.fetchPokemonMove(move),
+  const pokemonQueries = useQueries({
+    queries: bookmarksQuery.data
+      ? bookmarksQuery.data.map((bookmark) => {
+          const pokemonId = bookmark.pokemonId;
+          return {
+            queryKey: ["Pokemon", pokemonId],
+            queryFn: () => api.pokemon.fetchPokemonData(pokemonId),
+            enabled: bookmarksQuery.isSuccess,
+          };
+        })
+      : [],
   });
+
+  useEffect(() => {
+    if (bookmarksQuery.data) {
+      queryClient.invalidateQueries({ queryKey: ["Pokemon"] });
+    }
+  }, [bookmarksQuery.data, queryClient]);
+
+  const pokemonDetails = pokemonQueries
+    .map((result) => result.data)
+    .filter(
+      (pokemon): pokemon is TranslatedKoreanData => pokemon !== undefined
+    );
+
+  // 전체 상태를 통합하여 하나의 상태로 반환
+  const status: "pending" | "error" | "success" =
+    bookmarksQuery.status === "pending" ||
+    pokemonQueries.some((result) => result.status === "pending")
+      ? "pending"
+      : pokemonQueries.some((result) => result.status === "error")
+      ? "error"
+      : "success";
+
+  return {
+    data: pokemonDetails,
+    status,
+  };
 };
 
 // 으악

@@ -1,4 +1,4 @@
-import { User } from "@supabase/supabase-js";
+import { Provider, User } from "@supabase/supabase-js";
 
 import { SignUpResponse, UserProfile } from "@/types/supabaseTypes";
 import supabase from "./supabaseAPI";
@@ -38,26 +38,21 @@ class AuthAPI {
   // 로그인
   async signIn(email: string, password: string): Promise<User> {
     try {
-      // Supabase의 signInWithPassword 메서드를 호출하여 로그인 시도
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      // 로그인 에러 발생 시 예외 처리
       if (error) {
         throw new Error(error.message);
       }
 
-      // data.user가 null인 경우 (로그인은 성공했지만 사용자 정보가 없는 경우) 처리
       if (!data.user) {
         throw new Error("User data is missing after successful login");
       }
 
-      // 로그인 성공 시 사용자 정보 반환
       return data.user;
     } catch (error) {
-      // 모든 예외를 잡아서 일관된 형식의 에러 메시지로 다시 던짐
       if (error instanceof Error) {
         throw new Error(`Sign-in failed: ${error.message}`);
       } else {
@@ -65,6 +60,35 @@ class AuthAPI {
       }
     }
   }
+
+  // 소셜 로그인
+  async signInWithOAuth(platform: Provider): Promise<{
+    data: { provider: Provider; url: string } | null;
+    error: Error | null;
+  }> {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: platform,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      });
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("OAuth sign-in error:", error);
+      return {
+        data: null,
+        error:
+          error instanceof Error ? error : new Error("Unknown error occurred"),
+      };
+    }
+  }
+
   // 유저 정보 가져오기
   async getUser(userId: string): Promise<UserProfile | null> {
     try {

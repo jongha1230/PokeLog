@@ -11,9 +11,8 @@ export type SignUpRequest = {
 
 export type SignUpResult = {
   signUpData: SignUpResponse;
-  userData: UserProfile | null;
 };
-
+// 로그인
 export const useSignIn = () => {
   const queryClient = useQueryClient();
   const setUser = useAuthStore((state) => state.setUser);
@@ -38,7 +37,33 @@ export const useSignIn = () => {
     },
   });
 };
+// 소셜로그인
+export const useSignInWithOAuth = () => {
+  const queryClient = useQueryClient();
+  const setUser = useAuthStore((state) => state.setUser);
 
+  return useMutation<void, Error, Provider>({
+    mutationFn: async (provider: Provider) => {
+      await api.auth.signInWithOAuth(provider);
+    },
+    onSuccess: async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const userProfile = await api.auth.getUser(user.id);
+        console.log("윙윙", userProfile);
+        setUser(userProfile);
+        queryClient.invalidateQueries({ queryKey: ["auth"] });
+      }
+    },
+    onError: (error) => {
+      console.error("OAuth 로그인 에러:", error);
+    },
+  });
+};
+
+// 회원가입
 export const useSignUp = () => {
   return useMutation<SignUpResult, Error, SignUpRequest>({
     mutationFn: async ({ email, password, nickname }) => {

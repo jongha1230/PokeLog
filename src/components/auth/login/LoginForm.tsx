@@ -1,6 +1,9 @@
+import api from "@/api";
 import { useSignIn } from "@/components/shared/hooks/useAuth";
 import { BaseFormErrors, BaseFormState } from "@/types/FormTypes";
+import { Provider } from "@supabase/supabase-js";
 import { FormEvent, useState } from "react";
+import { FcGoogle, FcUndo } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -10,6 +13,7 @@ const LoginForm = () => {
   });
   const [errors, setErrors] = useState<Partial<BaseFormErrors>>({});
   const { mutate: signIn } = useSignIn();
+
   const navigate = useNavigate();
 
   const handleChange = (prop: keyof BaseFormState, value: string) => {
@@ -40,6 +44,23 @@ const LoginForm = () => {
       navigate("/");
     } catch (error) {
       console.error(`로그인 도중 에러 발생: ${(error as Error).message}`);
+    }
+  };
+
+  const handleSocialSignIn = async (e: FormEvent, provider: Provider) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await api.auth.signInWithOAuth(provider);
+      if (error) throw error;
+      if (!data) {
+        console.error("No data returned from social login");
+        return;
+      }
+
+      window.location.href = data.url;
+    } catch (error) {
+      console.error(`로그인 도중 에러 발생: ${(error as Error).message}`);
+      // 사용자에게 오류 메시지 표시
     }
   };
 
@@ -90,13 +111,48 @@ const LoginForm = () => {
             </Link>
             <Link
               to="/"
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold text-center py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+              className="flex items-center justify-center gap-4 bg-gray-600 hover:bg-gray-700 text-white font-bold text-center py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             >
-              홈으로 돌아가기
+              <span className="icon">
+                <FcUndo
+                  aria-label="undo button"
+                  className="cursor-pointer border rounded-full p-1 hover:brightness-90"
+                  size="30"
+                />
+              </span>
+              <p>홈으로 돌아가기</p>
             </Link>
           </div>
         </div>
       </form>
+      <button
+        onClick={(e) => handleSocialSignIn(e, "google" as Provider)}
+        className=" border hover:hover:brightness-90 flex items-center justify-center gap-4 text-center py-2 rounded focus:outline-none focus:shadow-outline w-full mt-4"
+      >
+        <span className="icon">
+          <FcGoogle
+            aria-label="google login"
+            className="cursor-pointer border rounded-full p-1 hover:brightness-90"
+            size="30"
+          />
+        </span>
+        <p>Google로 로그인하기</p>
+      </button>
+      <button
+        onClick={(e) => handleSocialSignIn(e, "kakao" as Provider)}
+        className="border bg-yellow-400 hover:hover:brightness-90 flex items-center justify-center gap-4 text-center py-2 rounded focus:outline-none focus:shadow-outline w-full mt-4"
+      >
+        <span className="icon">
+          <img
+            src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png"
+            alt="카카오 로그인"
+            className="cursor-pointer border bg-white rounded-full p-1 hover:brightness-90"
+            width="30"
+            height="30"
+          />
+        </span>
+        <p>카카오로 로그인하기</p>
+      </button>
     </div>
   );
 };

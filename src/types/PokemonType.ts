@@ -13,6 +13,7 @@ export type Pokemon = {
         front_default: string;
       };
     };
+    image?: string;
   };
   types: PokemonType[];
   abilities: Ability[];
@@ -86,19 +87,8 @@ export type PokemonType = {
   type: Type;
 };
 
-export type TranslatedKoreanData = {
+export type TranslatedKoreanData = Pokemon & {
   korean_name: string;
-  types: PokemonType[];
-  sprites: {
-    front_default: string;
-    other?: {
-      "official-artwork"?: {
-        front_default: string;
-      };
-    };
-  };
-  abilities: (Ability & { ability: { korean_name: string | undefined } })[];
-  stats: (Stat & { stat: { korean_name: string | undefined } })[];
   image: string;
 };
 

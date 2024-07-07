@@ -1,4 +1,4 @@
-import { BookmarkInsert, BookmarkRow } from "@/types/supabaseTypes";
+import { Tables } from "@/types/supabase";
 import supabase from "./supabaseAPI";
 
 class BookmarkAPI {
@@ -7,17 +7,17 @@ class BookmarkAPI {
     const { data, error } = await supabase
       .from("bookmarks")
       .select("*")
-      .eq("user_id", userId);
+      .eq("userId", userId);
 
     if (error) throw new Error(error.message);
-    return data as BookmarkRow[];
+    return data as Tables<"bookmarks">[];
   }
 
   // 북마크 생성
-  async createBookmarks(bookmark: BookmarkInsert) {
+  async createBookmarks(bookmark: Tables<"bookmarks">) {
     const { data, error } = await supabase
       .from("bookmarks")
-      .insert<BookmarkInsert>(bookmark);
+      .insert<Tables<"bookmarks">>(bookmark);
 
     if (error) throw new Error(error.message);
     return data;
