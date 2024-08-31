@@ -62,7 +62,7 @@ function MainPage() {
   );
 
   return (
-    <div className="bg-green-200 p-4 rounded-lg shadow-md">
+    <div className=" p-4 rounded-lg">
       <PokemonList
         title={getTitle()}
         data={data}

@@ -33,7 +33,7 @@ const AuthCallback = () => {
 
       if (error) {
         console.error("Error fetching user:", error);
-        navigate("/login"); // 로그인 실패 시 로그인 페이지로 리디렉션
+        navigate("/auth/login"); // 로그인 실패 시 로그인 페이지로 리디렉션
         return;
       }
 
@@ -42,7 +42,7 @@ const AuthCallback = () => {
         setUser(customUser);
         navigate("/");
       } else {
-        navigate("/login");
+        navigate("/auth/login");
       }
     };
 

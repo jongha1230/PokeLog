@@ -12,17 +12,17 @@ function Header({ user, signOut }: PropsWithChildren<HeaderProps>) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <header className="border-b border-black bg-gray-900 ">
+    <header className="border-b border-black  ">
       <div className="container mx-auto max-x-[1024px] px-5 h-16 flex items-center">
         <Link
           to={"/"}
-          className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-gray-400 to-white"
+          className="py-2 text-3xl font-bold bg-clip-text text-blue-500"
         >
-          Pokemon Index
+          Poke Log
         </Link>
 
         <div
-          className="flex ml-auto mr-8 h-full text-white relative"
+          className="flex ml-auto mr-8 h-full  relative"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >

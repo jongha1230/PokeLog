@@ -1,6 +1,6 @@
 import { Provider, User } from "@supabase/supabase-js";
 
-import { SignUpResponse, UserProfile } from "@/types/supabaseTypes";
+import { SignUpResponse } from "@/types/supabaseTypes";
 import supabase from "./supabaseAPI";
 class AuthAPI {
   //회원가입
@@ -86,24 +86,6 @@ class AuthAPI {
         error:
           error instanceof Error ? error : new Error("Unknown error occurred"),
       };
-    }
-  }
-
-  // 유저 정보 가져오기
-  async getUser(userId: string): Promise<UserProfile | null> {
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", userId)
-        .single();
-
-      if (error) throw error;
-
-      return data as UserProfile;
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-      return null;
     }
   }
 }

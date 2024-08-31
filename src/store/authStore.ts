@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        const profile = await api.auth.getUser(user.id);
+        const profile = await api.user.getProfile(user.id);
 
         set({ user: profile, isLoading: false });
       } else {
