@@ -1,6 +1,7 @@
 import { authLoader } from "@/components/shared/utils/authLoader";
 import {
   BookMarkListPage,
+  MyPage,
   PokemonDetailPage,
   RecommendPokemonPage,
 } from "@/pages";
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "/pokemon/:id", element: <PokemonDetailPage /> },
       { path: "/bookmark", element: <BookMarkListPage />, loader: authLoader },
       { path: "/recommend", element: <RecommendPokemonPage /> },
+      { path: "/mypage", element: <MyPage />, loader: authLoader },
     ],
   },
   {

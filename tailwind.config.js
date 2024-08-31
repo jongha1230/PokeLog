@@ -9,6 +9,7 @@ export default {
       backgroundImage: {
         "digimon-image": "url('/digimon.jpg')",
         "pokemon-image": "url('/pokemon.jpg')",
+        "mypage-image": "url('/mypage.jpg')",
       },
       colors: {
         brown: {
@@ -26,5 +27,16 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities(
+        {
+          ".bg-position-center-85": {
+            "background-position": "center 85%",
+          },
+        },
+        ["responsive", "hover"]
+      );
+    },
+  ],
 };

@@ -4,7 +4,7 @@ export const chipVariants = cva(
   [
     "text-sm",
     "border",
-    "rounded-full",
+    "rounded-lg",
     "px-3",
     "py-0.5",
     "hover:opacity-50",

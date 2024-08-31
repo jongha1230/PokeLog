@@ -1,6 +1,8 @@
 import api from "@/api";
+import supabase from "@/api/supabaseAPI";
 import { useAuthStore } from "@/store/authStore";
 import { SignUpResponse, UserProfile } from "@/types/supabaseTypes";
+import { Provider } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type SignUpRequest = {
@@ -22,7 +24,7 @@ export const useSignIn = () => {
       const user = await api.auth.signIn(email, password);
       if (!user) throw new Error("로그인 실패");
 
-      const userProfile = await api.auth.getUser(user.id);
+      const userProfile = await api.user.getProfile(user.id);
       if (!userProfile)
         throw new Error("사용자 프로필 가져오기에 실패했습니다.");
 
@@ -51,7 +53,7 @@ export const useSignInWithOAuth = () => {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        const userProfile = await api.auth.getUser(user.id);
+        const userProfile = await api.user.getProfile(user.id);
         console.log("윙윙", userProfile);
         setUser(userProfile);
         queryClient.invalidateQueries({ queryKey: ["auth"] });

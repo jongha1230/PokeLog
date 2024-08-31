@@ -45,7 +45,7 @@ const PokemonList = ({
         {title}
       </h2>
       {filterComponent}
-      <ul className="grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8 xxl:gap-x-4 xxl:gap-y-4">
+      <ul className="grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8 xxl:gap-x-4 xxl:gap-y-4">
         {status === "pending" ? (
           <PokemonSkeletonList />
         ) : (
@@ -55,7 +55,7 @@ const PokemonList = ({
                   page.results.map((pokemon: Pokemon) => (
                     <li
                       key={pokemon.name}
-                      className="border shadow-md p-4 m-4 rounded-3xl w-48 bg-white"
+                      className="border shadow-md p-4 m-4 rounded-[20px] w-48 bg-white"
                     >
                       <Link to={`/pokemon/${pokemon.id}`}>
                         <PokemonCard pokemon={pokemon} />
